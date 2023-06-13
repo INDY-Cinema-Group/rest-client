@@ -23,7 +23,9 @@ module RestClient
       res_name = net_http_res.class.to_s.gsub(/\ANet::HTTP/, '')
       content_type = (net_http_res['Content-type'] || '').gsub(/;.*\z/, '')
 
-      log << "# => #{code} #{res_name} | #{content_type} #{size} bytes, #{sprintf('%.2f', duration)}s\n"
+      uri = URI::parse(request.redacted_url)
+
+      log << "[#{uri.host},#{uri.path},#{uri.query}] => #{code} #{res_name} | #{content_type} #{size} bytes, #{sprintf('%.2f', duration)}s\n"
     end
 
     # HTTP status code
